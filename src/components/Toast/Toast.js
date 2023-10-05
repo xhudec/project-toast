@@ -22,8 +22,18 @@ function Toast({
   type = 'notice',
   children,
   onClose,
+  closeDelay = 5000,
 }) {
   const Icon = ICONS_BY_VARIANT[type];
+
+  React.useEffect(() => {
+    const timeoutId = setTimeout(onClose, closeDelay);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [closeDelay])
 
   return (
     <div className={`${styles.toast} ${styles[type]}`}>
@@ -41,4 +51,4 @@ function Toast({
   );
 }
 
-export default Toast;
+export default React.memo(Toast);
