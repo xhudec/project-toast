@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 import {
   AlertOctagon,
   AlertTriangle,
   CheckCircle,
   Info,
   X,
-} from 'react-feather';
+} from "react-feather";
 
-import VisuallyHidden from '../VisuallyHidden';
+import VisuallyHidden from "../VisuallyHidden";
 
-import styles from './Toast.module.css';
+import styles from "./Toast.module.css";
 
 const ICONS_BY_VARIANT = {
   notice: Info,
@@ -18,12 +18,7 @@ const ICONS_BY_VARIANT = {
   error: AlertOctagon,
 };
 
-function Toast({
-  type = 'notice',
-  children,
-  onClose,
-  closeDelay = 5000,
-}) {
+function Toast({ type = "notice", children, onClose, closeDelay = 5000 }) {
   const Icon = ICONS_BY_VARIANT[type];
 
   React.useEffect(() => {
@@ -32,8 +27,8 @@ function Toast({
     return () => {
       clearTimeout(timeoutId);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [closeDelay])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [closeDelay]);
 
   return (
     <div className={`${styles.toast} ${styles[type]}`}>
@@ -41,9 +36,10 @@ function Toast({
         <Icon size={24} />
       </div>
       <p className={styles.content}>
+        <VisuallyHidden>{type}</VisuallyHidden>
         {children}
       </p>
-      <button className={styles.closeButton} onClick={onClose}>
+      <button className={styles.closeButton} onClick={onClose} aria-live="off">
         <X size={24} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>

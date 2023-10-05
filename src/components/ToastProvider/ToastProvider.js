@@ -23,9 +23,13 @@ export default function ToastProvider({ children }) {
     setToasts((state) => state.filter((toast) => toast.id !== id));
   }, []);
 
+  const resetToasts = React.useCallback(() => {
+    setToasts([]);
+  }, []);
+
   const contextValue = React.useMemo(() => {
-    return { toasts, addToast, removeToast };
-  }, [addToast, removeToast, toasts]);
+    return { toasts, addToast, removeToast, resetToasts };
+  }, [addToast, removeToast, resetToasts, toasts]);
 
   return (
     <ToastContext.Provider value={contextValue}>

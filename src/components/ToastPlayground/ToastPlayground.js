@@ -8,8 +8,24 @@ import { useToastContext } from "../ToastProvider";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
+function useEscapeKey(callback) {
+  React.useEffect(() => {
+    function handleEscape(event) {
+      if (event.key === "Escape") {
+        callback();
+      }
+    }
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [callback]);
+}
+
 function ToastPlayground() {
-  const { addToast } = useToastContext()
+  const { addToast, resetToasts } = useToastContext()
   const [message, setMessage] = React.useState("");
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
 
@@ -20,6 +36,8 @@ function ToastPlayground() {
     setMessage("");
     setVariant(VARIANT_OPTIONS[0]);
   }
+
+  useEscapeKey(resetToasts)
 
   return (
     <div className={styles.wrapper}>
